@@ -1,0 +1,50 @@
+services:
+  grafana:
+    image: grafana/grafana:11.1.0
+    container_name: grafana
+    restart: unless-stopped
+    network_mode: host
+
+    environment:
+      GF_SERVER_HTTP_PORT: 3001
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?defina GRAFANA_ADMIN_PASSWORD no .env}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
+      TZ: America/Sao_Paulo
+      GF_DATAPROXY_TIMEOUT: 28
+      GF_DATAPROXY_DIAL_TIMEOUT: 10
+      GF_DATAPROXY_MAX_IDLE_CONNECTIONS_PER_HOST: 2
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD:?defina CLICKHOUSE_PASSWORD no .env}
+
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./provisioning:/etc/grafana/provisioning:ro
+      - ./dashboards:/var/lib/grafana/dashboards:ro
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 512M
+        reservations:
+          cpus: "0.5"
+          memory: 128M
+
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3001/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+
+volumes:
+  grafana-data:

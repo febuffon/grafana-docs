@@ -1,0 +1,461 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "cgUwny5Gz"
+      },
+      "description": "Cinza = sem cliente considerado. Verde = normal. Ponto LARANJA (maior, sobreposto) = CTO/prédio atenuado (100% dos logins com sinal <= -27 dBm). Pontos VERMELHOS GRANDES com rótulo = queda recente confirmada (2+ clientes desconectados nas últimas 48h e 50%+ do ponto afetado). Inclui CTOs externas e clientes em prédios/condomínios.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "#00E676",
+                  "text": "NORMAL"
+                },
+                "1": {
+                  "color": "#FF9800",
+                  "text": "ATENUADA"
+                },
+                "2": {
+                  "color": "#FF1744",
+                  "text": "QUEDA"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#00E676",
+                "value": 0
+              },
+              {
+                "color": "#FF9800",
+                "value": 1
+              },
+              {
+                "color": "#FF1744",
+                "value": 1.5
+              }
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 27,
+        "w": 16,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "basemap": {
+          "config": {
+            "showLabels": true,
+            "theme": "light"
+          },
+          "name": "Fundo claro",
+          "type": "carto"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": true,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "field": "status_val",
+                  "mode": "thresholds"
+                },
+                "opacity": 1,
+                "size": {
+                  "fixed": 7,
+                  "max": 9,
+                  "min": 6
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "A"
+            },
+            "location": {
+              "latitude": "latitude",
+              "longitude": "longitude",
+              "mode": "coords"
+            },
+            "name": "Todos os pontos",
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "fixed": "#FF9800"
+                },
+                "opacity": 1,
+                "size": {
+                  "fixed": 18,
+                  "max": 20,
+                  "min": 16
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 14,
+                  "textAlign": "center",
+                  "textBaseline": "top"
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "C"
+            },
+            "location": {
+              "latitude": "latitude",
+              "longitude": "longitude",
+              "mode": "coords"
+            },
+            "name": "🟠 CTO ATENUADA",
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "fixed": "#FF1744"
+                },
+                "opacity": 1,
+                "size": {
+                  "fixed": 34,
+                  "max": 34,
+                  "min": 30
+                },
+                "symbol": {
+                  "fixed": "img/icons/unicons/exclamation-triangle.svg",
+                  "mode": "fixed"
+                },
+                "text": {
+                  "field": "label",
+                  "fixed": ""
+                },
+                "textConfig": {
+                  "fontSize": 26,
+                  "offsetX": 0,
+                  "offsetY": 32,
+                  "textAlign": "center",
+                  "textBaseline": "top"
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "B"
+            },
+            "location": {
+              "latitude": "latitude",
+              "longitude": "longitude",
+              "mode": "coords"
+            },
+            "name": "🔴 QUEDA DETECTADA",
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "dashboardVariable": false,
+          "id": "coords",
+          "lat": -29.97,
+          "lon": -51.15,
+          "noRepeat": false,
+          "zoom": 13
+        }
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "cgUwny5Gz"
+          },
+          "format": "table",
+          "rawSql": "SELECT local_nome, bairro, latitude, longitude, total_clientes, offline, status_val FROM ( SELECT local_nome, bairro, latitude, longitude, total_clientes, offline, atenuados, total_logins, min_sinal, pct, pon_list, olt_list, status_val FROM ( SELECT cx.descricao AS local_nome, cx.bairro AS bairro, CAST(cx.latitude AS DECIMAL(10,7)) AS latitude, CAST(cx.longitude AS DECIMAL(10,7)) AS longitude, COALESCE(l.total,0) AS total_clientes, COALESCE(l.offline,0) AS offline, COALESCE(l.atenuados,0) AS atenuados, COALESCE(l.total_logins,0) AS total_logins, l.min_sinal AS min_sinal, CASE WHEN COALESCE(l.total,0)=0 THEN 0 ELSE ROUND(100.0*l.offline/l.total,1) END AS pct, l.pon_list AS pon_list, l.olt_list AS olt_list, CASE WHEN COALESCE(l.total,0)=0 THEN -1 WHEN l.offline>=2 AND (100.0*l.offline/l.total)>=50 THEN 2 WHEN COALESCE(l.total_logins,0)>=2 AND l.atenuados=l.total_logins THEN 1 ELSE 0 END AS status_val FROM rad_caixa_ftth cx LEFT JOIN ( SELECT logins.id_caixa_ftth, COUNT(*) AS total_logins, SUM(CASE WHEN ra.open_session=1 OR (ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS total, SUM(CASE WHEN (ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY THEN 1 ELSE 0 END) AS offline, SUM(CASE WHEN f.sinal_rx <= -27 THEN 1 ELSE 0 END) AS atenuados, MIN(f.sinal_rx) AS min_sinal, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.ponid END ORDER BY f.ponid SEPARATOR ', ') AS pon_list, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.olt_desc END ORDER BY f.olt_desc SEPARATOR ', ') AS olt_list FROM (SELECT DISTINCT ru.id, ru.login, ru.id_caixa_ftth FROM radusuarios ru JOIN cliente_contrato cc ON cc.id_cliente = ru.id_cliente AND cc.status = 'A' WHERE cc.status_internet = 'A') logins LEFT JOIN (SELECT username, MAX(acctstoptime) AS last_stop, MAX(CASE WHEN acctstoptime IS NULL THEN 1 ELSE 0 END) AS open_session FROM radacct GROUP BY username) ra ON ra.username = logins.login LEFT JOIN (SELECT rf.id_login, rf.ponid, rf.sinal_rx, rr.descricao AS olt_desc, ROW_NUMBER() OVER (PARTITION BY rf.id_login ORDER BY rf.ultima_atualizacao DESC, rf.id DESC) AS rn FROM radpop_radio_cliente_fibra rf LEFT JOIN radpop_radio rr ON rr.id = rf.id_transmissor WHERE rf.id_login > 0) f ON f.id_login = logins.id AND f.rn = 1 GROUP BY logins.id_caixa_ftth ) l ON l.id_caixa_ftth = cx.id WHERE cx.status = 'A' AND cx.latitude IS NOT NULL AND cx.latitude <> '' UNION ALL SELECT pr.descricao AS local_nome, '' AS bairro, CAST(pr.latitude AS DECIMAL(10,7)) AS latitude, CAST(pr.longitude AS DECIMAL(10,7)) AS longitude, COALESCE(p.total,0) AS total_clientes, COALESCE(p.offline,0) AS offline, COALESCE(p.atenuados,0) AS atenuados, COALESCE(p.total_logins,0) AS total_logins, p.min_sinal AS min_sinal, CASE WHEN COALESCE(p.total,0)=0 THEN 0 ELSE ROUND(100.0*p.offline/p.total,1) END AS pct, p.pon_list AS pon_list, p.olt_list AS olt_list, CASE WHEN COALESCE(p.total,0)=0 THEN -1 WHEN p.offline>=2 AND (100.0*p.offline/p.total)>=50 THEN 2 WHEN COALESCE(p.total_logins,0)>=2 AND p.atenuados=p.total_logins THEN 1 ELSE 0 END AS status_val FROM predio pr LEFT JOIN ( SELECT logins.id_predio, COUNT(*) AS total_logins, SUM(CASE WHEN ra.open_session=1 OR (ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS total, SUM(CASE WHEN (ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY THEN 1 ELSE 0 END) AS offline, SUM(CASE WHEN f.sinal_rx <= -27 THEN 1 ELSE 0 END) AS atenuados, MIN(f.sinal_rx) AS min_sinal, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.ponid END ORDER BY f.ponid SEPARATOR ', ') AS pon_list, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.olt_desc END ORDER BY f.olt_desc SEPARATOR ', ') AS olt_list FROM (SELECT DISTINCT ru.id, ru.login, ru.id_predio FROM radusuarios ru JOIN cliente_contrato cc ON cc.id_cliente = ru.id_cliente AND cc.status = 'A' WHERE cc.status_internet = 'A' AND ru.id_predio IS NOT NULL AND ru.id_predio<>0) logins LEFT JOIN (SELECT username, MAX(acctstoptime) AS last_stop, MAX(CASE WHEN acctstoptime IS NULL THEN 1 ELSE 0 END) AS open_session FROM radacct GROUP BY username) ra ON ra.username = logins.login LEFT JOIN (SELECT rf.id_login, rf.ponid, rf.sinal_rx, rr.descricao AS olt_desc, ROW_NUMBER() OVER (PARTITION BY rf.id_login ORDER BY rf.ultima_atualizacao DESC, rf.id DESC) AS rn FROM radpop_radio_cliente_fibra rf LEFT JOIN radpop_radio rr ON rr.id = rf.id_transmissor WHERE rf.id_login > 0) f ON f.id_login = logins.id AND f.rn = 1 GROUP BY logins.id_predio ) p ON p.id_predio = pr.id WHERE pr.status = 'A' AND pr.latitude IS NOT NULL AND pr.latitude <> '' ) u ) x WHERE total_clientes >= 2",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "cgUwny5Gz"
+          },
+          "format": "table",
+          "rawSql": "SELECT local_nome, bairro, latitude, longitude, total_clientes, offline, pct, status_val, CASE WHEN status_val = 2 THEN CONCAT(local_nome, ' — ', ROUND(pct), '% OFFLINE') ELSE local_nome END AS label FROM ( SELECT local_nome, bairro, latitude, longitude, total_clientes, offline, atenuados, total_logins, min_sinal, pct, pon_list, olt_list, status_val FROM ( SELECT cx.descricao AS local_nome, cx.bairro AS bairro, CAST(cx.latitude AS DECIMAL(10,7)) AS latitude, CAST(cx.longitude AS DECIMAL(10,7)) AS longitude, COALESCE(l.total,0) AS total_clientes, COALESCE(l.offline,0) AS offline, COALESCE(l.atenuados,0) AS atenuados, COALESCE(l.total_logins,0) AS total_logins, l.min_sinal AS min_sinal, CASE WHEN COALESCE(l.total,0)=0 THEN 0 ELSE ROUND(100.0*l.offline/l.total,1) END AS pct, l.pon_list AS pon_list, l.olt_list AS olt_list, CASE WHEN COALESCE(l.total,0)=0 THEN -1 WHEN l.offline>=2 AND (100.0*l.offline/l.total)>=50 THEN 2 WHEN COALESCE(l.total_logins,0)>=2 AND l.atenuados=l.total_logins THEN 1 ELSE 0 END AS status_val FROM rad_caixa_ftth cx LEFT JOIN ( SELECT logins.id_caixa_ftth, COUNT(*) AS total_logins, SUM(CASE WHEN ra.open_session=1 OR (ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS total, SUM(CASE WHEN (ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY THEN 1 ELSE 0 END) AS offline, SUM(CASE WHEN f.sinal_rx <= -27 THEN 1 ELSE 0 END) AS atenuados, MIN(f.sinal_rx) AS min_sinal, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.ponid END ORDER BY f.ponid SEPARATOR ', ') AS pon_list, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.olt_desc END ORDER BY f.olt_desc SEPARATOR ', ') AS olt_list FROM (SELECT DISTINCT ru.id, ru.login, ru.id_caixa_ftth FROM radusuarios ru JOIN cliente_contrato cc ON cc.id_cliente = ru.id_cliente AND cc.status = 'A' WHERE cc.status_internet = 'A') logins LEFT JOIN (SELECT username, MAX(acctstoptime) AS last_stop, MAX(CASE WHEN acctstoptime IS NULL THEN 1 ELSE 0 END) AS open_session FROM radacct GROUP BY username) ra ON ra.username = logins.login LEFT JOIN (SELECT rf.id_login, rf.ponid, rf.sinal_rx, rr.descricao AS olt_desc, ROW_NUMBER() OVER (PARTITION BY rf.id_login ORDER BY rf.ultima_atualizacao DESC, rf.id DESC) AS rn FROM radpop_radio_cliente_fibra rf LEFT JOIN radpop_radio rr ON rr.id = rf.id_transmissor WHERE rf.id_login > 0) f ON f.id_login = logins.id AND f.rn = 1 GROUP BY logins.id_caixa_ftth ) l ON l.id_caixa_ftth = cx.id WHERE cx.status = 'A' AND cx.latitude IS NOT NULL AND cx.latitude <> '' UNION ALL SELECT pr.descricao AS local_nome, '' AS bairro, CAST(pr.latitude AS DECIMAL(10,7)) AS latitude, CAST(pr.longitude AS DECIMAL(10,7)) AS longitude, COALESCE(p.total,0) AS total_clientes, COALESCE(p.offline,0) AS offline, COALESCE(p.atenuados,0) AS atenuados, COALESCE(p.total_logins,0) AS total_logins, p.min_sinal AS min_sinal, CASE WHEN COALESCE(p.total,0)=0 THEN 0 ELSE ROUND(100.0*p.offline/p.total,1) END AS pct, p.pon_list AS pon_list, p.olt_list AS olt_list, CASE WHEN COALESCE(p.total,0)=0 THEN -1 WHEN p.offline>=2 AND (100.0*p.offline/p.total)>=50 THEN 2 WHEN COALESCE(p.total_logins,0)>=2 AND p.atenuados=p.total_logins THEN 1 ELSE 0 END AS status_val FROM predio pr LEFT JOIN ( SELECT logins.id_predio, COUNT(*) AS total_logins, SUM(CASE WHEN ra.open_session=1 OR (ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS total, SUM(CASE WHEN (ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY THEN 1 ELSE 0 END) AS offline, SUM(CASE WHEN f.sinal_rx <= -27 THEN 1 ELSE 0 END) AS atenuados, MIN(f.sinal_rx) AS min_sinal, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.ponid END ORDER BY f.ponid SEPARATOR ', ') AS pon_list, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.olt_desc END ORDER BY f.olt_desc SEPARATOR ', ') AS olt_list FROM (SELECT DISTINCT ru.id, ru.login, ru.id_predio FROM radusuarios ru JOIN cliente_contrato cc ON cc.id_cliente = ru.id_cliente AND cc.status = 'A' WHERE cc.status_internet = 'A' AND ru.id_predio IS NOT NULL AND ru.id_predio<>0) logins LEFT JOIN (SELECT username, MAX(acctstoptime) AS last_stop, MAX(CASE WHEN acctstoptime IS NULL THEN 1 ELSE 0 END) AS open_session FROM radacct GROUP BY username) ra ON ra.username = logins.login LEFT JOIN (SELECT rf.id_login, rf.ponid, rf.sinal_rx, rr.descricao AS olt_desc, ROW_NUMBER() OVER (PARTITION BY rf.id_login ORDER BY rf.ultima_atualizacao DESC, rf.id DESC) AS rn FROM radpop_radio_cliente_fibra rf LEFT JOIN radpop_radio rr ON rr.id = rf.id_transmissor WHERE rf.id_login > 0) f ON f.id_login = logins.id AND f.rn = 1 GROUP BY logins.id_predio ) p ON p.id_predio = pr.id WHERE pr.status = 'A' AND pr.latitude IS NOT NULL AND pr.latitude <> '' ) u ) x WHERE status_val = 2",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "cgUwny5Gz"
+          },
+          "format": "table",
+          "rawSql": "SELECT local_nome, bairro, latitude, longitude, total_clientes, min_sinal, status_val, CONCAT(local_nome, ' — ATENUADA') AS label FROM ( SELECT local_nome, bairro, latitude, longitude, total_clientes, offline, atenuados, total_logins, min_sinal, pct, pon_list, olt_list, status_val FROM ( SELECT cx.descricao AS local_nome, cx.bairro AS bairro, CAST(cx.latitude AS DECIMAL(10,7)) AS latitude, CAST(cx.longitude AS DECIMAL(10,7)) AS longitude, COALESCE(l.total,0) AS total_clientes, COALESCE(l.offline,0) AS offline, COALESCE(l.atenuados,0) AS atenuados, COALESCE(l.total_logins,0) AS total_logins, l.min_sinal AS min_sinal, CASE WHEN COALESCE(l.total,0)=0 THEN 0 ELSE ROUND(100.0*l.offline/l.total,1) END AS pct, l.pon_list AS pon_list, l.olt_list AS olt_list, CASE WHEN COALESCE(l.total,0)=0 THEN -1 WHEN l.offline>=2 AND (100.0*l.offline/l.total)>=50 THEN 2 WHEN COALESCE(l.total_logins,0)>=2 AND l.atenuados=l.total_logins THEN 1 ELSE 0 END AS status_val FROM rad_caixa_ftth cx LEFT JOIN ( SELECT logins.id_caixa_ftth, COUNT(*) AS total_logins, SUM(CASE WHEN ra.open_session=1 OR (ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS total, SUM(CASE WHEN (ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY THEN 1 ELSE 0 END) AS offline, SUM(CASE WHEN f.sinal_rx <= -27 THEN 1 ELSE 0 END) AS atenuados, MIN(f.sinal_rx) AS min_sinal, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.ponid END ORDER BY f.ponid SEPARATOR ', ') AS pon_list, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.olt_desc END ORDER BY f.olt_desc SEPARATOR ', ') AS olt_list FROM (SELECT DISTINCT ru.id, ru.login, ru.id_caixa_ftth FROM radusuarios ru JOIN cliente_contrato cc ON cc.id_cliente = ru.id_cliente AND cc.status = 'A' WHERE cc.status_internet = 'A') logins LEFT JOIN (SELECT username, MAX(acctstoptime) AS last_stop, MAX(CASE WHEN acctstoptime IS NULL THEN 1 ELSE 0 END) AS open_session FROM radacct GROUP BY username) ra ON ra.username = logins.login LEFT JOIN (SELECT rf.id_login, rf.ponid, rf.sinal_rx, rr.descricao AS olt_desc, ROW_NUMBER() OVER (PARTITION BY rf.id_login ORDER BY rf.ultima_atualizacao DESC, rf.id DESC) AS rn FROM radpop_radio_cliente_fibra rf LEFT JOIN radpop_radio rr ON rr.id = rf.id_transmissor WHERE rf.id_login > 0) f ON f.id_login = logins.id AND f.rn = 1 GROUP BY logins.id_caixa_ftth ) l ON l.id_caixa_ftth = cx.id WHERE cx.status = 'A' AND cx.latitude IS NOT NULL AND cx.latitude <> '' UNION ALL SELECT pr.descricao AS local_nome, '' AS bairro, CAST(pr.latitude AS DECIMAL(10,7)) AS latitude, CAST(pr.longitude AS DECIMAL(10,7)) AS longitude, COALESCE(p.total,0) AS total_clientes, COALESCE(p.offline,0) AS offline, COALESCE(p.atenuados,0) AS atenuados, COALESCE(p.total_logins,0) AS total_logins, p.min_sinal AS min_sinal, CASE WHEN COALESCE(p.total,0)=0 THEN 0 ELSE ROUND(100.0*p.offline/p.total,1) END AS pct, p.pon_list AS pon_list, p.olt_list AS olt_list, CASE WHEN COALESCE(p.total,0)=0 THEN -1 WHEN p.offline>=2 AND (100.0*p.offline/p.total)>=50 THEN 2 WHEN COALESCE(p.total_logins,0)>=2 AND p.atenuados=p.total_logins THEN 1 ELSE 0 END AS status_val FROM predio pr LEFT JOIN ( SELECT logins.id_predio, COUNT(*) AS total_logins, SUM(CASE WHEN ra.open_session=1 OR (ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS total, SUM(CASE WHEN (ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY THEN 1 ELSE 0 END) AS offline, SUM(CASE WHEN f.sinal_rx <= -27 THEN 1 ELSE 0 END) AS atenuados, MIN(f.sinal_rx) AS min_sinal, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.ponid END ORDER BY f.ponid SEPARATOR ', ') AS pon_list, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.olt_desc END ORDER BY f.olt_desc SEPARATOR ', ') AS olt_list FROM (SELECT DISTINCT ru.id, ru.login, ru.id_predio FROM radusuarios ru JOIN cliente_contrato cc ON cc.id_cliente = ru.id_cliente AND cc.status = 'A' WHERE cc.status_internet = 'A' AND ru.id_predio IS NOT NULL AND ru.id_predio<>0) logins LEFT JOIN (SELECT username, MAX(acctstoptime) AS last_stop, MAX(CASE WHEN acctstoptime IS NULL THEN 1 ELSE 0 END) AS open_session FROM radacct GROUP BY username) ra ON ra.username = logins.login LEFT JOIN (SELECT rf.id_login, rf.ponid, rf.sinal_rx, rr.descricao AS olt_desc, ROW_NUMBER() OVER (PARTITION BY rf.id_login ORDER BY rf.ultima_atualizacao DESC, rf.id DESC) AS rn FROM radpop_radio_cliente_fibra rf LEFT JOIN radpop_radio rr ON rr.id = rf.id_transmissor WHERE rf.id_login > 0) f ON f.id_login = logins.id AND f.rn = 1 GROUP BY logins.id_predio ) p ON p.id_predio = pr.id WHERE pr.status = 'A' AND pr.latitude IS NOT NULL AND pr.latitude <> '' ) u ) x WHERE status_val = 1",
+          "refId": "C"
+        }
+      ],
+      "title": "MAPA FLEX — CTOs e Prédios",
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "cgUwny5Gz"
+      },
+      "description": "CTOs e prédios com queda confirmada (2+ clientes desconectados nas últimas 48h, 50%+ afetado) ou atenuados (100% dos logins com sinal <= -27 dBm). Vazio = tudo normal.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#FF9800",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Local"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.width",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% Offline"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sinal Min (dBm)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 130
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "🔴 QUEDA": {
+                        "color": "#C4162A",
+                        "index": 0
+                      },
+                      "🟠 ATENUADA": {
+                        "color": "#FF9800",
+                        "index": 1
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 27,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "cellHeight": "lg",
+        "showHeader": true
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "cgUwny5Gz"
+          },
+          "format": "table",
+          "rawSql": "SELECT CASE WHEN status_val = 2 THEN '🔴 QUEDA' ELSE '🟠 ATENUADA' END AS `Status`, local_nome AS `Local`, total_clientes AS `Total`, offline AS `Offline`, pct AS `% Offline`, min_sinal AS `Sinal Min (dBm)`, pon_list AS `PON`, olt_list AS `OLT` FROM ( SELECT local_nome, bairro, latitude, longitude, total_clientes, offline, atenuados, total_logins, min_sinal, pct, pon_list, olt_list, status_val FROM ( SELECT cx.descricao AS local_nome, cx.bairro AS bairro, CAST(cx.latitude AS DECIMAL(10,7)) AS latitude, CAST(cx.longitude AS DECIMAL(10,7)) AS longitude, COALESCE(l.total,0) AS total_clientes, COALESCE(l.offline,0) AS offline, COALESCE(l.atenuados,0) AS atenuados, COALESCE(l.total_logins,0) AS total_logins, l.min_sinal AS min_sinal, CASE WHEN COALESCE(l.total,0)=0 THEN 0 ELSE ROUND(100.0*l.offline/l.total,1) END AS pct, l.pon_list AS pon_list, l.olt_list AS olt_list, CASE WHEN COALESCE(l.total,0)=0 THEN -1 WHEN l.offline>=2 AND (100.0*l.offline/l.total)>=50 THEN 2 WHEN COALESCE(l.total_logins,0)>=2 AND l.atenuados=l.total_logins THEN 1 ELSE 0 END AS status_val FROM rad_caixa_ftth cx LEFT JOIN ( SELECT logins.id_caixa_ftth, COUNT(*) AS total_logins, SUM(CASE WHEN ra.open_session=1 OR (ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS total, SUM(CASE WHEN (ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY THEN 1 ELSE 0 END) AS offline, SUM(CASE WHEN f.sinal_rx <= -27 THEN 1 ELSE 0 END) AS atenuados, MIN(f.sinal_rx) AS min_sinal, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.ponid END ORDER BY f.ponid SEPARATOR ', ') AS pon_list, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.olt_desc END ORDER BY f.olt_desc SEPARATOR ', ') AS olt_list FROM (SELECT DISTINCT ru.id, ru.login, ru.id_caixa_ftth FROM radusuarios ru JOIN cliente_contrato cc ON cc.id_cliente = ru.id_cliente AND cc.status = 'A' WHERE cc.status_internet = 'A') logins LEFT JOIN (SELECT username, MAX(acctstoptime) AS last_stop, MAX(CASE WHEN acctstoptime IS NULL THEN 1 ELSE 0 END) AS open_session FROM radacct GROUP BY username) ra ON ra.username = logins.login LEFT JOIN (SELECT rf.id_login, rf.ponid, rf.sinal_rx, rr.descricao AS olt_desc, ROW_NUMBER() OVER (PARTITION BY rf.id_login ORDER BY rf.ultima_atualizacao DESC, rf.id DESC) AS rn FROM radpop_radio_cliente_fibra rf LEFT JOIN radpop_radio rr ON rr.id = rf.id_transmissor WHERE rf.id_login > 0) f ON f.id_login = logins.id AND f.rn = 1 GROUP BY logins.id_caixa_ftth ) l ON l.id_caixa_ftth = cx.id WHERE cx.status = 'A' AND cx.latitude IS NOT NULL AND cx.latitude <> '' UNION ALL SELECT pr.descricao AS local_nome, '' AS bairro, CAST(pr.latitude AS DECIMAL(10,7)) AS latitude, CAST(pr.longitude AS DECIMAL(10,7)) AS longitude, COALESCE(p.total,0) AS total_clientes, COALESCE(p.offline,0) AS offline, COALESCE(p.atenuados,0) AS atenuados, COALESCE(p.total_logins,0) AS total_logins, p.min_sinal AS min_sinal, CASE WHEN COALESCE(p.total,0)=0 THEN 0 ELSE ROUND(100.0*p.offline/p.total,1) END AS pct, p.pon_list AS pon_list, p.olt_list AS olt_list, CASE WHEN COALESCE(p.total,0)=0 THEN -1 WHEN p.offline>=2 AND (100.0*p.offline/p.total)>=50 THEN 2 WHEN COALESCE(p.total_logins,0)>=2 AND p.atenuados=p.total_logins THEN 1 ELSE 0 END AS status_val FROM predio pr LEFT JOIN ( SELECT logins.id_predio, COUNT(*) AS total_logins, SUM(CASE WHEN ra.open_session=1 OR (ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS total, SUM(CASE WHEN (ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY THEN 1 ELSE 0 END) AS offline, SUM(CASE WHEN f.sinal_rx <= -27 THEN 1 ELSE 0 END) AS atenuados, MIN(f.sinal_rx) AS min_sinal, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.ponid END ORDER BY f.ponid SEPARATOR ', ') AS pon_list, GROUP_CONCAT(DISTINCT CASE WHEN ((ra.open_session IS NULL OR ra.open_session=0) AND ra.last_stop IS NOT NULL AND ra.last_stop >= NOW() - INTERVAL 2 DAY) OR f.sinal_rx <= -27 THEN f.olt_desc END ORDER BY f.olt_desc SEPARATOR ', ') AS olt_list FROM (SELECT DISTINCT ru.id, ru.login, ru.id_predio FROM radusuarios ru JOIN cliente_contrato cc ON cc.id_cliente = ru.id_cliente AND cc.status = 'A' WHERE cc.status_internet = 'A' AND ru.id_predio IS NOT NULL AND ru.id_predio<>0) logins LEFT JOIN (SELECT username, MAX(acctstoptime) AS last_stop, MAX(CASE WHEN acctstoptime IS NULL THEN 1 ELSE 0 END) AS open_session FROM radacct GROUP BY username) ra ON ra.username = logins.login LEFT JOIN (SELECT rf.id_login, rf.ponid, rf.sinal_rx, rr.descricao AS olt_desc, ROW_NUMBER() OVER (PARTITION BY rf.id_login ORDER BY rf.ultima_atualizacao DESC, rf.id DESC) AS rn FROM radpop_radio_cliente_fibra rf LEFT JOIN radpop_radio rr ON rr.id = rf.id_transmissor WHERE rf.id_login > 0) f ON f.id_login = logins.id AND f.rn = 1 GROUP BY logins.id_predio ) p ON p.id_predio = pr.id WHERE pr.status = 'A' AND pr.latitude IS NOT NULL AND pr.latitude <> '' ) u ) x WHERE status_val IN (1, 2) ORDER BY status_val DESC, `% Offline` DESC, `Sinal Min (dBm)` ASC",
+          "refId": "A"
+        }
+      ],
+      "title": "🔴🟠 QUEDAS E CTOs ATENUADAS",
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "1m",
+  "schemaVersion": 42,
+  "tags": [
+    "flex",
+    "mapa",
+    "rede",
+    "cto"
+  ],
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "MAPA FLEX - STATUS CTO's",
+  "uid": "31ac9bcd-920e-4a6c-a941-4e23e4503524",
+  "version": 4
+}

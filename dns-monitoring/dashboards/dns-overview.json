@@ -1,0 +1,1466 @@
+{
+  "uid": "dns-overview",
+  "title": "Monitoramento de Rede DNS",
+  "tags": [
+    "dns",
+    "unbound",
+    "clickhouse"
+  ],
+  "timezone": "browser",
+  "schemaVersion": 38,
+  "version": 4,
+  "refresh": "30s",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "server_id",
+        "label": "Servidor",
+        "type": "query",
+        "datasource": {
+          "uid": "clickhouse-dns",
+          "type": "grafana-clickhouse-datasource"
+        },
+        "query": "SELECT DISTINCT server_id FROM dns_telemetry.dns_queries ORDER BY server_id",
+        "refresh": 2,
+        "multi": false,
+        "includeAll": true,
+        "allValue": "%",
+        "current": {}
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 100,
+      "title": "📊 Visão Geral",
+      "type": "row",
+      "collapsed": false,
+      "panels": [],
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "id": 3,
+      "title": "Total de Consultas",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 1,
+        "w": 4,
+        "h": 4
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT count() AS Total FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE'",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Sites Não Encontrados",
+      "type": "stat",
+      "gridPos": {
+        "x": 4,
+        "y": 1,
+        "w": 4,
+        "h": 4
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 50
+              },
+              {
+                "color": "red",
+                "value": 500
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT countIf(rcode = 'NXDOMAIN') AS NXDOMAIN FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE'",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Velocidade de Resposta (ms)",
+      "type": "stat",
+      "gridPos": {
+        "x": 8,
+        "y": 1,
+        "w": 4,
+        "h": 4
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "decimals": 1,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 100
+              },
+              {
+                "color": "red",
+                "value": 500
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT round(avg(latency_us) / 1000, 1) AS Latencia FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE' AND latency_us > 0",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Dispositivos na Rede",
+      "type": "stat",
+      "gridPos": {
+        "x": 12,
+        "y": 1,
+        "w": 4,
+        "h": 4
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT uniq(client_ip) AS Clientes FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE'",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Erros do Servidor",
+      "type": "stat",
+      "gridPos": {
+        "x": 16,
+        "y": 1,
+        "w": 4,
+        "h": 4
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 10
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT countIf(rcode = 'SERVFAIL') AS SERVFAIL FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE'",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Sites Diferentes Acessados",
+      "type": "stat",
+      "gridPos": {
+        "x": 20,
+        "y": 1,
+        "w": 4,
+        "h": 4
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT uniq(qname) AS Dominios FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE'",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 101,
+      "title": "📈 Tráfego & Performance",
+      "type": "row",
+      "collapsed": false,
+      "panels": [],
+      "gridPos": {
+        "x": 0,
+        "y": 5,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "id": 1,
+      "title": "Consultas DNS por Minuto",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 6,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10
+          },
+          "unit": "none"
+        }
+      },
+      "options": {
+        "tooltip": {
+          "mode": "multi"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT toStartOfMinute(ts) AS time, count() AS Queries FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE' GROUP BY time ORDER BY time",
+          "format": 0,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Endereços Não Encontrados por Minuto",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 12,
+        "y": 6,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "fixed"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10
+          },
+          "unit": "none"
+        }
+      },
+      "options": {
+        "tooltip": {
+          "mode": "multi"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT toStartOfMinute(ts) AS time, countIf(rcode = 'NXDOMAIN') AS NXDOMAIN FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE' GROUP BY time ORDER BY time",
+          "format": 0,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Tempo de Resposta ao Longo do Tempo",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 14,
+        "w": 8,
+        "h": 8
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "decimals": 1,
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 5
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        }
+      },
+      "options": {
+        "tooltip": {
+          "mode": "multi"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT toStartOfMinute(ts) AS time, round(avg(latency_us)/1000, 1) AS Media_ms, round(max(latency_us)/1000, 1) AS Maximo_ms FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE' AND latency_us > 0 GROUP BY time ORDER BY time",
+          "format": 0,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Taxa de Acerto de Cache (%)",
+      "type": "gauge",
+      "gridPos": {
+        "x": 8,
+        "y": 14,
+        "w": 8,
+        "h": 8
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "decimals": 1,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 50
+              },
+              {
+                "color": "green",
+                "value": 70
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT round(countIf(from_cache = 1) / count() * 100, 1) AS CacheHitRate FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE'",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Cache Hit vs Miss ao Longo do Tempo",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 16,
+        "y": 14,
+        "w": 8,
+        "h": 8
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 15,
+            "stacking": {
+              "mode": "normal"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        }
+      },
+      "options": {
+        "tooltip": {
+          "mode": "multi"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT toStartOfMinute(ts) AS time, countIf(from_cache = 1) AS Cache_Hit, countIf(from_cache = 0) AS Cache_Miss FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE' GROUP BY time ORDER BY time",
+          "format": 0,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "title": "🌐 IPv4 vs IPv6",
+      "type": "row",
+      "collapsed": false,
+      "panels": [],
+      "gridPos": {
+        "x": 0,
+        "y": 22,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "id": 18,
+      "title": "Proporção IPv4 (A) vs IPv6 (AAAA)",
+      "type": "barchart",
+      "gridPos": {
+        "x": 0,
+        "y": 23,
+        "w": 8,
+        "h": 8
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "decimals": 1,
+          "custom": {
+            "fillOpacity": 80,
+            "lineWidth": 1
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AAAA (IPv6)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "green"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "A (IPv4)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "orange"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "orientation": "horizontal",
+        "xTickLabelRotation": 0,
+        "showValue": "always",
+        "stacking": "none",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT if(qtype = 'A', 'A (IPv4)', 'AAAA (IPv6)') AS Tipo, round(count() / sum(count()) OVER () * 100, 1) AS Percentual FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE' AND qtype IN ('A', 'AAAA') GROUP BY Tipo",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Consultas IPv4 vs IPv6 ao Longo do Tempo",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 8,
+        "y": 23,
+        "w": 16,
+        "h": 8
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AAAA_IPv6"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "purple"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "A_IPv4"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "blue"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "tooltip": {
+          "mode": "multi"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT toStartOfMinute(ts) AS time, countIf(qtype = 'A') AS A_IPv4, countIf(qtype = 'AAAA') AS AAAA_IPv6 FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE' GROUP BY time ORDER BY time",
+          "format": 0,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Domínios sem Suporte IPv6",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 31,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "gradient-gauge"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-BlPu"
+                }
+              },
+              {
+                "id": "min",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Total"
+          }
+        ],
+        "footer": {
+          "show": false
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT qname AS Dominio, count() AS Total FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE' AND qtype = 'AAAA' AND rcode = 'NOERROR' AND answer_count = 0 GROUP BY Dominio ORDER BY Total DESC LIMIT 15",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "title": "Taxa de Erros: IPv4 (A) vs IPv6 (AAAA)",
+      "type": "table",
+      "gridPos": {
+        "x": 12,
+        "y": 31,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Pct_NXDOMAIN"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 10
+                    },
+                    {
+                      "color": "red",
+                      "value": 30
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Pct_SERVFAIL"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 5
+                    },
+                    {
+                      "color": "red",
+                      "value": 15
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "sortBy": [],
+        "footer": {
+          "show": false
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT qtype AS Tipo, count() AS Total, countIf(rcode='NXDOMAIN') AS NXDOMAIN, round(countIf(rcode='NXDOMAIN')/count()*100,1) AS Pct_NXDOMAIN, countIf(rcode='SERVFAIL') AS SERVFAIL, round(countIf(rcode='SERVFAIL')/count()*100,1) AS Pct_SERVFAIL FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE' AND qtype IN ('A', 'AAAA') GROUP BY Tipo ORDER BY Tipo",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "title": "🔍 Análise de Consultas",
+      "type": "row",
+      "collapsed": false,
+      "panels": [],
+      "gridPos": {
+        "x": 0,
+        "y": 39,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "id": 9,
+      "title": "Sites Mais Acessados",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 40,
+        "w": 12,
+        "h": 10
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "gradient-gauge"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-BlPu"
+                }
+              },
+              {
+                "id": "min",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Total"
+          }
+        ],
+        "footer": {
+          "show": false
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT qname AS Dominio, count() AS Total, countIf(rcode='NXDOMAIN') AS NXDOMAIN, countIf(rcode='NOERROR') AS OK FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE' AND client_ip NOT IN ('127.0.0.1', '::1') GROUP BY Dominio ORDER BY Total DESC LIMIT 15",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Dispositivos que Mais Navegaram",
+      "type": "table",
+      "gridPos": {
+        "x": 12,
+        "y": 40,
+        "w": 12,
+        "h": 10
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "gradient-gauge"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-GrYlRd"
+                }
+              },
+              {
+                "id": "min",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Pct_NXDOMAIN"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 10
+                    },
+                    {
+                      "color": "red",
+                      "value": 30
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Total"
+          }
+        ],
+        "footer": {
+          "show": false
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT client_ip AS Cliente, count() AS Total, countIf(rcode='NXDOMAIN') AS NXDOMAIN, round(countIf(rcode='NXDOMAIN')/count()*100,1) AS Pct_NXDOMAIN FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE' AND client_ip NOT IN ('127.0.0.1', '::1') GROUP BY Cliente ORDER BY Total DESC LIMIT 15",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Resultado das Consultas",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 50,
+        "w": 8,
+        "h": 8
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "gradient-gauge"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-BlPu"
+                }
+              },
+              {
+                "id": "min",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RCODE"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "NOERROR": {
+                        "color": "green",
+                        "index": 0
+                      }
+                    }
+                  },
+                  {
+                    "type": "value",
+                    "options": {
+                      "NXDOMAIN": {
+                        "color": "red",
+                        "index": 1
+                      }
+                    }
+                  },
+                  {
+                    "type": "value",
+                    "options": {
+                      "SERVFAIL": {
+                        "color": "orange",
+                        "index": 2
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Total"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT rcode AS RCODE, count() AS Total, round(count()/sum(count()) OVER ()*100, 1) AS Percentual FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE' AND rcode != '-' GROUP BY RCODE ORDER BY Total DESC",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Tipo de Busca DNS",
+      "type": "table",
+      "gridPos": {
+        "x": 8,
+        "y": 50,
+        "w": 8,
+        "h": 8
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "gradient-gauge"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-GrYlRd"
+                }
+              },
+              {
+                "id": "min",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Total"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT qtype AS Tipo, count() AS Total, round(count()/sum(count()) OVER ()*100, 1) AS Percentual FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE' GROUP BY Tipo ORDER BY Total DESC LIMIT 10",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Extensões Mais Acessadas (.com, .br...)",
+      "type": "table",
+      "gridPos": {
+        "x": 16,
+        "y": 50,
+        "w": 8,
+        "h": 8
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "gradient-gauge"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-BlPu"
+                }
+              },
+              {
+                "id": "min",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Total"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT lower(arrayElement(splitByChar('.', qname), -1)) AS Extensao, count() AS Total, round(count()/sum(count()) OVER ()*100, 1) AS Percentual FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE' AND length(qname) > 0 GROUP BY Extensao ORDER BY Total DESC LIMIT 10",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 104,
+      "title": "🚨 Segurança / Anomalias",
+      "type": "row",
+      "collapsed": false,
+      "panels": [],
+      "gridPos": {
+        "x": 0,
+        "y": 58,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "id": 14,
+      "title": "Dispositivos com Mais Erros (possível vírus)",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 59,
+        "w": 24,
+        "h": 8
+      },
+      "datasource": {
+        "uid": "clickhouse-dns",
+        "type": "grafana-clickhouse-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none"
+        }
+      },
+      "options": {
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "NXDOMAIN"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "uid": "clickhouse-dns",
+            "type": "grafana-clickhouse-datasource"
+          },
+          "rawSql": "SELECT client_ip AS IP, countIf(rcode='NXDOMAIN') AS NXDOMAIN, count() AS Total, round(countIf(rcode='NXDOMAIN')/count()*100,1) AS Pct FROM dns_telemetry.dns_queries WHERE ts >= $__fromTime AND ts <= $__toTime AND message_type = 'CLIENT_RESPONSE' AND client_ip NOT IN ('127.0.0.1', '::1') GROUP BY IP HAVING NXDOMAIN > 0 ORDER BY NXDOMAIN DESC LIMIT 20",
+          "format": 1,
+          "refId": "A"
+        }
+      ]
+    }
+  ]
+}
