@@ -43,7 +43,7 @@
         }
       },
       "gridPos": {
-        "h": 2,
+        "h": 3,
         "w": 24,
         "x": 0,
         "y": 0
@@ -51,9 +51,9 @@
       "id": 5,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
@@ -63,7 +63,10 @@
           "values": false
         },
         "showPercentChange": false,
-        "textMode": "value_and_name",
+        "text": {
+          "valueSize": 80
+        },
+        "textMode": "value",
         "wideLayout": true
       },
       "pluginVersion": "13.0.1",
@@ -100,7 +103,7 @@
           }
         }
       ],
-      "title": "Throughput Agregado (Borda)",
+      "title": "Throughput Agregado (Borda) — Download",
       "type": "stat"
     },
     {
@@ -121,10 +124,10 @@
         ]
       },
       "gridPos": {
-        "h": 17,
+        "h": 16,
         "w": 24,
         "x": 0,
-        "y": 2
+        "y": 3
       },
       "id": 20,
       "options": {
