@@ -1,0 +1,2327 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfuvt469z2rr4e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "bps"
+        }
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "itemid",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "bps",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "THROUGHPUT",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"342753\", \"342792\", \"370116\", \"370117\", \"370219\", \"370220\", \"387309\"]}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "Throughput Agregado (Borda)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mixed",
+        "uid": "-- Mixed --"
+      },
+      "description": "Anel: fatia menor = tipo (branco OLT / azul Switch / roxo Core-Borda); restante = status ao vivo do Zabbix (verde OK, amarelo alerta Media, vermelho alerta Alta/Critica). Alertas Warning/Info sao ignorados. Enlaces: espessura = trafego (hover mostra a banda); verde OK, laranja LAG degradado, vermelho down.",
+      "fieldConfig": {
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mainstat"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 20,
+      "options": {
+        "edges": {
+          "mainStatUnit": "Mb/s"
+        },
+        "nodes": {
+          "arcs": [
+            {
+              "color": "red",
+              "field": "arc__crit"
+            },
+            {
+              "color": "yellow",
+              "field": "arc__warn"
+            },
+            {
+              "color": "green",
+              "field": "arc__ok"
+            },
+            {
+              "color": "#E0E0E0",
+              "field": "arc__tipo_olt"
+            },
+            {
+              "color": "blue",
+              "field": "arc__tipo_switch"
+            },
+            {
+              "color": "purple",
+              "field": "arc__tipo_core"
+            }
+          ]
+        }
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "edge_id",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "linkstatus",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "linkstatus == 1 ? \"green\" : \"red\"",
+              "text": "color"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "STATUSMAIN",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"314779\", \"314781\", \"315047\", \"315859\", \"315858\", \"315579\", \"316599\", \"317162\", \"316876\", \"318242\", \"352516\", \"318536\", \"353879\", \"170829\", \"197698\", \"368602\", \"372912\", \"368597\", \"368596\", \"357698\", \"372910\", \"372869\", \"396348\", \"372868\", \"368605\", \"373530\", \"373531\", \"155770\", \"167245\"]}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "edge_id",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "linkstatus",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "linkstatus == 1 ? \"green\" : \"red\"",
+              "text": "color"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "ffuw30dbcm2v4d"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "STATUSALT",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_ALT__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"53317\", \"53318\"]}, \"auth\": \"__ZABBIX_TOKEN_ALT__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "result.0.lastvalue",
+              "text": "m1",
+              "type": "number"
+            },
+            {
+              "selector": "result.1.lastvalue",
+              "text": "m2",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "\"385360\"",
+              "text": "edge_id"
+            },
+            {
+              "selector": "((m1 == 1) && (m2 == 1)) ? \"green\" : (((m1 == 1) || (m2 == 1)) ? \"orange\" : \"red\")",
+              "text": "color"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "LAG1",
+          "root_selector": "",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"385358\", \"385359\"], \"sortfield\": \"itemid\"}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "result.0.lastvalue",
+              "text": "m1",
+              "type": "number"
+            },
+            {
+              "selector": "result.1.lastvalue",
+              "text": "m2",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "\"316134\"",
+              "text": "edge_id"
+            },
+            {
+              "selector": "((m1 == 1) && (m2 == 1)) ? \"green\" : (((m1 == 1) || (m2 == 1)) ? \"orange\" : \"red\")",
+              "text": "color"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "LAG2",
+          "root_selector": "",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"316132\", \"316133\"], \"sortfield\": \"itemid\"}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "itemid",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "bw_in",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "(itemid == \"314627\") ? \"314779\" : ((itemid == \"314629\") ? \"314781\" : ((itemid == \"314895\") ? \"315047\" : ((itemid == \"315707\") ? \"315859\" : ((itemid == \"315706\") ? \"315858\" : ((itemid == \"315411\") ? \"315579\" : ((itemid == \"316455\") ? \"316599\" : ((itemid == \"317002\") ? \"317162\" : ((itemid == \"316708\") ? \"316876\" : ((itemid == \"318066\") ? \"318242\" : ((itemid == \"352508\") ? \"352516\" : ((itemid == \"318376\") ? \"318536\" : ((itemid == \"353871\") ? \"353879\" : ((itemid == \"170757\") ? \"170829\" : ((itemid == \"197690\") ? \"197698\" : ((itemid == \"368222\") ? \"368602\" : ((itemid == \"372407\") ? \"372912\" : ((itemid == \"368217\") ? \"368597\" : ((itemid == \"368216\") ? \"368596\" : ((itemid == \"357568\") ? \"357698\" : ((itemid == \"372405\") ? \"372910\" : ((itemid == \"372364\") ? \"372869\" : ((itemid == \"381584\") ? \"396348\" : ((itemid == \"372363\") ? \"372868\" : ((itemid == \"385336\") ? \"385360\" : ((itemid == \"315974\") ? \"316134\" : ((itemid == \"368225\") ? \"368605\" : ((itemid == \"373210\") ? \"373530\" : ((itemid == \"373211\") ? \"373531\" : ((itemid == \"155460\") ? \"155770\" : ((itemid == \"167125\") ? \"167245\" : (\"unknown\")))))))))))))))))))))))))))))))",
+              "text": "edge_id"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "BWINMAIN",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"314627\", \"314629\", \"314895\", \"315707\", \"315706\", \"315411\", \"316455\", \"317002\", \"316708\", \"318066\", \"352508\", \"318376\", \"353871\", \"170757\", \"197690\", \"368222\", \"372407\", \"368217\", \"368216\", \"357568\", \"372405\", \"372364\", \"381584\", \"372363\", \"385336\", \"315974\", \"368225\", \"373210\", \"373211\", \"155460\", \"167125\"]}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "itemid",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "bw_in",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "(itemid == \"53173\") ? \"53317\" : ((itemid == \"53174\") ? \"53318\" : (\"unknown\"))",
+              "text": "edge_id"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "ffuw30dbcm2v4d"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "BWINALT",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_ALT__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"53173\", \"53174\"]}, \"auth\": \"__ZABBIX_TOKEN_ALT__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "itemid",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "bw_out",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "(itemid == \"314646\") ? \"314779\" : ((itemid == \"314648\") ? \"314781\" : ((itemid == \"314914\") ? \"315047\" : ((itemid == \"315726\") ? \"315859\" : ((itemid == \"315725\") ? \"315858\" : ((itemid == \"315432\") ? \"315579\" : ((itemid == \"316473\") ? \"316599\" : ((itemid == \"317022\") ? \"317162\" : ((itemid == \"316729\") ? \"316876\" : ((itemid == \"318088\") ? \"318242\" : ((itemid == \"352509\") ? \"352516\" : ((itemid == \"318396\") ? \"318536\" : ((itemid == \"353872\") ? \"353879\" : ((itemid == \"170766\") ? \"170829\" : ((itemid == \"197691\") ? \"197698\" : ((itemid == \"368450\") ? \"368602\" : ((itemid == \"372710\") ? \"372912\" : ((itemid == \"368445\") ? \"368597\" : ((itemid == \"368444\") ? \"368596\" : ((itemid == \"357646\") ? \"357698\" : ((itemid == \"372708\") ? \"372910\" : ((itemid == \"372667\") ? \"372869\" : ((itemid == \"381586\") ? \"396348\" : ((itemid == \"372666\") ? \"372868\" : ((itemid == \"385339\") ? \"385360\" : ((itemid == \"315994\") ? \"316134\" : ((itemid == \"368453\") ? \"368605\" : ((itemid == \"373402\") ? \"373530\" : ((itemid == \"373403\") ? \"373531\" : ((itemid == \"155646\") ? \"155770\" : ((itemid == \"167197\") ? \"167245\" : (\"unknown\")))))))))))))))))))))))))))))))",
+              "text": "edge_id"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "BWOUTMAIN",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"314646\", \"314648\", \"314914\", \"315726\", \"315725\", \"315432\", \"316473\", \"317022\", \"316729\", \"318088\", \"352509\", \"318396\", \"353872\", \"170766\", \"197691\", \"368450\", \"372710\", \"368445\", \"368444\", \"357646\", \"372708\", \"372667\", \"381586\", \"372666\", \"385339\", \"315994\", \"368453\", \"373402\", \"373403\", \"155646\", \"167197\"]}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "itemid",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "bw_out",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "(itemid == \"53191\") ? \"53317\" : ((itemid == \"53192\") ? \"53318\" : (\"unknown\"))",
+              "text": "edge_id"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "ffuw30dbcm2v4d"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "BWOUTALT",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_ALT__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"53191\", \"53192\"]}, \"auth\": \"__ZABBIX_TOKEN_ALT__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "itemid",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "bw_speed",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "(itemid == \"314665\") ? \"314779\" : ((itemid == \"314667\") ? \"314781\" : ((itemid == \"314933\") ? \"315047\" : ((itemid == \"315745\") ? \"315859\" : ((itemid == \"315744\") ? \"315858\" : ((itemid == \"315453\") ? \"315579\" : ((itemid == \"316491\") ? \"316599\" : ((itemid == \"317042\") ? \"317162\" : ((itemid == \"316750\") ? \"316876\" : ((itemid == \"318110\") ? \"318242\" : ((itemid == \"352510\") ? \"352516\" : ((itemid == \"318416\") ? \"318536\" : ((itemid == \"353873\") ? \"353879\" : ((itemid == \"170775\") ? \"170829\" : ((itemid == \"197692\") ? \"197698\" : ((itemid == \"368526\") ? \"368602\" : ((itemid == \"372811\") ? \"372912\" : ((itemid == \"368521\") ? \"368597\" : ((itemid == \"368520\") ? \"368596\" : ((itemid == \"357672\") ? \"357698\" : ((itemid == \"372809\") ? \"372910\" : ((itemid == \"372768\") ? \"372869\" : ((itemid == \"381588\") ? \"396348\" : ((itemid == \"372767\") ? \"372868\" : ((itemid == \"385342\") ? \"385360\" : ((itemid == \"316014\") ? \"316134\" : ((itemid == \"368529\") ? \"368605\" : ((itemid == \"373466\") ? \"373530\" : ((itemid == \"373467\") ? \"373531\" : ((itemid == \"155708\") ? \"155770\" : ((itemid == \"167221\") ? \"167245\" : (\"unknown\")))))))))))))))))))))))))))))))",
+              "text": "edge_id"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "BWSPEEDMAIN",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"314665\", \"314667\", \"314933\", \"315745\", \"315744\", \"315453\", \"316491\", \"317042\", \"316750\", \"318110\", \"352510\", \"318416\", \"353873\", \"170775\", \"197692\", \"368526\", \"372811\", \"368521\", \"368520\", \"357672\", \"372809\", \"372768\", \"381588\", \"372767\", \"385342\", \"316014\", \"368529\", \"373466\", \"373467\", \"155708\", \"167221\"]}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "itemid",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "bw_speed",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "(itemid == \"53209\") ? \"53317\" : ((itemid == \"53210\") ? \"53318\" : (\"unknown\"))",
+              "text": "edge_id"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "ffuw30dbcm2v4d"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "BWSPEEDALT",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_ALT__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"53209\", \"53210\"]}, \"auth\": \"__ZABBIX_TOKEN_ALT__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "edge_id",
+              "text": "edge_id",
+              "type": "string"
+            },
+            {
+              "selector": "id",
+              "text": "id",
+              "type": "string"
+            },
+            {
+              "selector": "source",
+              "text": "source",
+              "type": "string"
+            },
+            {
+              "selector": "target",
+              "text": "target",
+              "type": "string"
+            },
+            {
+              "selector": "label",
+              "text": "label",
+              "type": "string"
+            }
+          ],
+          "data": "edge_id,id,source,target,label\n314779,link01,OLT02,OLT06,OLT02-OLT06\n314781,link02,OLT02,OLT04,OLT02-OLT04\n315047,link03,OLT03,OLT02,OLT03-OLT02\n315859,link04,OLT05,OLT06,OLT05-OLT06\n315858,link05,OLT05,OLT08,OLT05-OLT08\n315579,link06,OLT06,SWA01,OLT06-SWA01\n316599,link07,OLT08,OLT18,OLT08-OLT18\n317162,link08,OLT09,SWA01,OLT09-SWA01\n316876,link09,OLT10,SWA01,OLT10-SWA01\n318242,link10,OLT11,SWA01,OLT11-SWA01\n352516,link11,OLT12,SWA01,OLT12-SWA01\n318536,link12,OLT13,OLT14,OLT13-OLT14\n353879,link13,OLT13,OLT24,OLT13-OLT24\n170829,link14,OLT16,SWA01,OLT16-SWA01\n197698,link15,OLT17,SWA03,OLT17-SWA03\n368602,link16,SWA01,SWA02,SWA01-SWA02 (GrupoFibra)\n372912,link17,SWA01,SWA03,SWA01-SWA03\n368597,link18,SWA01,NHPARCERIALP,OneTelecom Nazario Deferrari\n368596,link19,SWA01,NHPARCERIALP,BR Deferrari\n357698,link20,OLT22,OLT21,Lindoia-Itu\n372910,link21,SWA03,SWA02,SWA03-SWA02 (LP Connect)\n53317,link22,OLT01,OLT02,OLT01-OLT02\n53318,link23,OLT01,OLT28,OLT01-OLT28\n372869,link24,SWA03,OLT25,SWA03-OLT25\n396348,link25,OLT26,OLT22,OLT26-OLT22\n372868,link26,SWA03,OLT21,SWA03-OLT21 (Porta18)\n385360,link27,OLT04,SWA01,OLT04-SWA01 (LAG)\n316134,link28,OLT12,OLT13,OLT12-OLT13 (LAG)\n368605,link29,SWA01,CR110,SWA01-CR110 (LAG 40G)\n373530,link30,OLT20,SWA02,OLT20-SWA02 (Parks 8PON)\n373531,link31,OLT19,SWA02,OLT19-SWA02 (Parks 4PON)\n155770,link32,CR110,SWC01,CR110-SWC01 (LAG 40G)\n167245,link33,SWC01,BR10,SWC01-BR10 (LAG 40G)",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "besfqhdzq5xq8c"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "EDGEMETA",
+          "source": "inline",
+          "type": "csv"
+        },
+        {
+          "columns": [
+            {
+              "selector": "id",
+              "text": "id",
+              "type": "string"
+            },
+            {
+              "selector": "title",
+              "text": "title",
+              "type": "string"
+            },
+            {
+              "selector": "subtitle",
+              "text": "subtitle",
+              "type": "string"
+            },
+            {
+              "selector": "fixedX",
+              "text": "fixedX",
+              "type": "number"
+            },
+            {
+              "selector": "fixedY",
+              "text": "fixedY",
+              "type": "number"
+            },
+            {
+              "selector": "mainstat",
+              "text": "mainstat",
+              "type": "string"
+            },
+            {
+              "selector": "detail__tipo",
+              "text": "detail__tipo",
+              "type": "string"
+            },
+            {
+              "selector": "arc__tipo_olt",
+              "text": "arc__tipo_olt",
+              "type": "number"
+            },
+            {
+              "selector": "arc__tipo_switch",
+              "text": "arc__tipo_switch",
+              "type": "number"
+            },
+            {
+              "selector": "arc__tipo_core",
+              "text": "arc__tipo_core",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "id",
+              "text": "node_key"
+            }
+          ],
+          "data": "id,title,subtitle,fixedX,fixedY,mainstat,detail__tipo,arc__tipo_olt,arc__tipo_switch,arc__tipo_core\nBR10,BR10 (Borda),Core / Borda,-120,-310,,Core,0,0,0.25\nCR110,CR110 (BNG),Core / Borda,-120,-40,,Core,0,0,0.25\nNHPARCERIALP,NH Parceria LP,NH Parceria LP,-350,281,,Switch,0,0.25,0\nOLT01,OLT01,Igara,-608,-106,,OLT,0.25,0,0\nOLT02,OLT02,Igara,-536,-241,,OLT,0.25,0,0\nOLT03,OLT03,Igara,-696,-233,,OLT,0.25,0,0\nOLT04,OLT04,Igara,-350,-271,,OLT,0.25,0,0\nOLT05,OLT05,Niteroi,-680,146,,OLT,0.25,0,0\nOLT06,OLT06,Niteroi,-530,159,,OLT,0.25,0,0\nOLT08,OLT08,Niteroi,-628,289,,OLT,0.25,0,0\nOLT09,OLT09,Estancia,-223,202,,OLT,0.25,0,0\nOLT10,OLT10,Estancia,-51,145,,OLT,0.25,0,0\nOLT11,OLT11,Estancia,-260,53,,OLT,0.25,0,0\nOLT12,OLT12,Estancia,79,59,,OLT,0.25,0,0\nOLT13,OLT13,Mato Grande,308,-185,,OLT,0.25,0,0\nOLT14,OLT14,Mato Grande,438,-266,,OLT,0.25,0,0\nOLT16,OLT16,Estancia,230,53,,OLT,0.25,0,0\nOLT17,OLT17,Itu,278,195,,OLT,0.25,0,0\nOLT18,OLT18,Niteroi,-802,237,,OLT,0.25,0,0\nOLT19,OLT19,Shopping Total,826,-77,,OLT,0.25,0,0\nOLT20,OLT20,Shopping Total,703,9,,OLT,0.25,0,0\nOLT21,OLT21,Itu,550,162,,OLT,0.25,0,0\nOLT22,OLT22,Lindoia,872,245,,OLT,0.25,0,0\nOLT24,OLT24,Mato Grande,448,-109,,OLT,0.25,0,0\nOLT25,OLT25,Itu,400,95,,OLT,0.25,0,0\nOLT26,OLT26,Lindoia,725,275,,OLT,0.25,0,0\nOLT28,OLT28,Igara,-766,-95,,OLT,0.25,0,0\nSWA01,SWA01,Estancia,-91,300,,Switch,0,0.25,0\nSWA02,SWA02,Shopping Total,688,-144,,Switch,0,0.25,0\nSWA03,SWA03,Itu,423,244,,Switch,0,0.25,0\nSWC01,SWC01 (Core),Core / Borda,-120,-175,,Core,0,0,0.25",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "besfqhdzq5xq8c"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "NODES",
+          "source": "inline",
+          "type": "csv"
+        },
+        {
+          "columns": [
+            {
+              "selector": "hosts.0.hostid",
+              "text": "hostid",
+              "type": "string"
+            },
+            {
+              "selector": "priority",
+              "text": "prio",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "(hostid == \"10544\") ? \"OLT01\" : ((hostid == \"10545\") ? \"OLT02\" : ((hostid == \"10546\") ? \"OLT03\" : ((hostid == \"10547\") ? \"OLT04\" : ((hostid == \"10548\") ? \"OLT05\" : ((hostid == \"10549\") ? \"OLT06\" : ((hostid == \"10550\") ? \"OLT08\" : ((hostid == \"10551\") ? \"OLT09\" : ((hostid == \"10552\") ? \"OLT10\" : ((hostid == \"10553\") ? \"OLT11\" : ((hostid == \"10554\") ? \"OLT12\" : ((hostid == \"10555\") ? \"OLT13\" : ((hostid == \"10556\") ? \"OLT14\" : ((hostid == \"10589\") ? \"OLT16\" : ((hostid == \"10603\") ? \"OLT17\" : ((hostid == \"10614\") ? \"OLT18\" : ((hostid == \"10577\") ? \"OLT21\" : ((hostid == \"10578\") ? \"OLT22\" : ((hostid == \"10727\") ? \"OLT24\" : ((hostid == \"10728\") ? \"OLT25\" : ((hostid == \"10726\") ? \"OLT26\" : ((hostid == \"10732\") ? \"OLT28\" : ((hostid == \"10714\") ? \"SWA01\" : ((hostid == \"10716\") ? \"SWA02\" : ((hostid == \"10717\") ? \"SWA03\" : ((hostid == \"10575\") ? \"CR110\" : ((hostid == \"10580\") ? \"BR10\" : ((hostid == \"10616\") ? \"OLT19\" : ((hostid == \"10718\") ? \"OLT20\" : ((hostid == \"10557\") ? \"SWC01\" : (\"unknown\"))))))))))))))))))))))))))))))",
+              "text": "node_key"
+            },
+            {
+              "selector": "0.75",
+              "text": "v"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "NODEANY",
+          "root_selector": "result",
+          "source": "url",
+          "summarizeAlias": "any_sev",
+          "summarizeBy": "node_key",
+          "summarizeExpression": "max(v)",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"trigger.get\", \"params\": {\"output\": [\"triggerid\", \"priority\"], \"hostids\": [\"10544\", \"10545\", \"10546\", \"10547\", \"10548\", \"10549\", \"10550\", \"10551\", \"10552\", \"10553\", \"10554\", \"10555\", \"10556\", \"10589\", \"10603\", \"10614\", \"10577\", \"10578\", \"10727\", \"10728\", \"10726\", \"10732\", \"10714\", \"10716\", \"10717\", \"10575\", \"10580\", \"10616\", \"10718\", \"10557\"], \"filter\": {\"value\": 1}, \"min_severity\": 3, \"monitored\": true, \"skipDependent\": true, \"selectHosts\": [\"hostid\"]}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "hosts.0.hostid",
+              "text": "hostid",
+              "type": "string"
+            },
+            {
+              "selector": "priority",
+              "text": "prio",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "(hostid == \"10544\") ? \"OLT01\" : ((hostid == \"10545\") ? \"OLT02\" : ((hostid == \"10546\") ? \"OLT03\" : ((hostid == \"10547\") ? \"OLT04\" : ((hostid == \"10548\") ? \"OLT05\" : ((hostid == \"10549\") ? \"OLT06\" : ((hostid == \"10550\") ? \"OLT08\" : ((hostid == \"10551\") ? \"OLT09\" : ((hostid == \"10552\") ? \"OLT10\" : ((hostid == \"10553\") ? \"OLT11\" : ((hostid == \"10554\") ? \"OLT12\" : ((hostid == \"10555\") ? \"OLT13\" : ((hostid == \"10556\") ? \"OLT14\" : ((hostid == \"10589\") ? \"OLT16\" : ((hostid == \"10603\") ? \"OLT17\" : ((hostid == \"10614\") ? \"OLT18\" : ((hostid == \"10577\") ? \"OLT21\" : ((hostid == \"10578\") ? \"OLT22\" : ((hostid == \"10727\") ? \"OLT24\" : ((hostid == \"10728\") ? \"OLT25\" : ((hostid == \"10726\") ? \"OLT26\" : ((hostid == \"10732\") ? \"OLT28\" : ((hostid == \"10714\") ? \"SWA01\" : ((hostid == \"10716\") ? \"SWA02\" : ((hostid == \"10717\") ? \"SWA03\" : ((hostid == \"10575\") ? \"CR110\" : ((hostid == \"10580\") ? \"BR10\" : ((hostid == \"10616\") ? \"OLT19\" : ((hostid == \"10718\") ? \"OLT20\" : ((hostid == \"10557\") ? \"SWC01\" : (\"unknown\"))))))))))))))))))))))))))))))",
+              "text": "node_key"
+            },
+            {
+              "selector": "0.75",
+              "text": "v"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "NODECRIT",
+          "root_selector": "result",
+          "source": "url",
+          "summarizeAlias": "crit_sev",
+          "summarizeBy": "node_key",
+          "summarizeExpression": "max(v)",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"trigger.get\", \"params\": {\"output\": [\"triggerid\", \"priority\"], \"hostids\": [\"10544\", \"10545\", \"10546\", \"10547\", \"10548\", \"10549\", \"10550\", \"10551\", \"10552\", \"10553\", \"10554\", \"10555\", \"10556\", \"10589\", \"10603\", \"10614\", \"10577\", \"10578\", \"10727\", \"10728\", \"10726\", \"10732\", \"10714\", \"10716\", \"10717\", \"10575\", \"10580\", \"10616\", \"10718\", \"10557\"], \"filter\": {\"value\": 1}, \"min_severity\": 4, \"monitored\": true, \"skipDependent\": true, \"selectHosts\": [\"hostid\"]}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "Topologia da Rede — Enlaces PtP (espessura = uso de banda)",
+      "transformations": [
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^(STATUSMAIN|STATUSALT|LAG[0-9]+)$/"
+          },
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "BWINMAIN|BWINALT"
+          },
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "BWOUTMAIN|BWOUTALT"
+          },
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "BWSPEEDMAIN|BWSPEEDALT"
+          },
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^(merge-.*|EDGEMETA)$/"
+          },
+          "id": "joinByField",
+          "options": {
+            "byField": "edge_id",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "itemid 1": true,
+              "itemid 2": true,
+              "itemid 3": true,
+              "linkstatus": true,
+              "m1": true,
+              "m2": true
+            },
+            "renameByName": {
+              "color merge": "color",
+              "id EDGEMETA": "id",
+              "label EDGEMETA": "label",
+              "source EDGEMETA": "source",
+              "target EDGEMETA": "target"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "bw_max",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "bw_in",
+                "bw_out"
+              ],
+              "reducer": "max"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "utilization",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "bw_max"
+                }
+              },
+              "operator": "/",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "bw_speed"
+                }
+              }
+            },
+            "mode": "binary",
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "util_scaled",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "utilization"
+                }
+              },
+              "operator": "*",
+              "right": {
+                "fixed": "24"
+              }
+            },
+            "mode": "binary",
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "thickness",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "util_scaled"
+                }
+              },
+              "operator": "+",
+              "right": {
+                "fixed": "1.5"
+              }
+            },
+            "mode": "binary",
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "mainstat",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "bw_max"
+                }
+              },
+              "operator": "/",
+              "right": {
+                "fixed": "1000000"
+              }
+            },
+            "mode": "binary",
+            "replaceFields": false
+          }
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^(NODES|NODEANY|NODECRIT)$/"
+          },
+          "id": "joinByField",
+          "options": {
+            "byField": "node_key",
+            "mode": "outer"
+          }
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^joinByField.*$/"
+          },
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "renameByName": {
+              "any_sev summary": "any_sev",
+              "arc__tipo_core NODES": "arc__tipo_core",
+              "arc__tipo_olt NODES": "arc__tipo_olt",
+              "arc__tipo_switch NODES": "arc__tipo_switch",
+              "crit_sev summary": "crit_sev",
+              "detail__tipo NODES": "detail__tipo",
+              "fixedX NODES": "fixedX",
+              "fixedY NODES": "fixedY",
+              "id NODES": "id",
+              "mainstat NODES": "mainstat",
+              "subtitle NODES": "subtitle",
+              "title NODES": "title"
+            }
+          }
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^joinByField.*$/"
+          },
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "nullValue": "0",
+                "targetField": "any_sev"
+              },
+              {
+                "destinationType": "number",
+                "nullValue": "0",
+                "targetField": "crit_sev"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^joinByField.*$/"
+          },
+          "id": "calculateField",
+          "options": {
+            "alias": "arc__warn",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "any_sev"
+                }
+              },
+              "operator": "-",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "crit_sev"
+                }
+              }
+            },
+            "mode": "binary",
+            "replaceFields": false
+          }
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^joinByField.*$/"
+          },
+          "id": "calculateField",
+          "options": {
+            "alias": "arc__ok",
+            "binary": {
+              "left": {
+                "fixed": "0.75"
+              },
+              "operator": "-",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "any_sev"
+                }
+              }
+            },
+            "mode": "binary",
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "arc__crit",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "crit_sev"
+                }
+              },
+              "operator": "*",
+              "right": {
+                "fixed": "1"
+              }
+            },
+            "mode": "binary",
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "any_sev": true,
+              "crit_sev": true,
+              "node_key": true
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "nodeGraph"
+    },
+    {
+      "datasource": {
+        "type": "mixed",
+        "uid": "-- Mixed --"
+      },
+      "description": "Tráfego atual (maior valor entre RX e TX) por enlace PtP, capacidade da porta e % de utilização.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Download"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bps"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Upload"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bps"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Pico (maior)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bps"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Capacidade"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bps"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Uso"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 0.6
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.8
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "green": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "OK"
+                      },
+                      "orange": {
+                        "color": "orange",
+                        "index": 1,
+                        "text": "Degradado"
+                      },
+                      "red": {
+                        "color": "red",
+                        "index": 2,
+                        "text": "DOWN"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "color-background"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 13,
+        "x": 0,
+        "y": 19
+      },
+      "id": 23,
+      "options": {
+        "footer": {
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Pico (maior)"
+          }
+        ]
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "edge_id",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "linkstatus",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "linkstatus == 1 ? \"green\" : \"red\"",
+              "text": "color"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "STATUSMAIN",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"314779\", \"314781\", \"315047\", \"315859\", \"315858\", \"315579\", \"316599\", \"317162\", \"316876\", \"318242\", \"352516\", \"318536\", \"353879\", \"170829\", \"197698\", \"368602\", \"372912\", \"368597\", \"368596\", \"357698\", \"372910\", \"372869\", \"396348\", \"372868\", \"368605\", \"373530\", \"373531\", \"155770\", \"167245\"]}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "edge_id",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "linkstatus",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "linkstatus == 1 ? \"green\" : \"red\"",
+              "text": "color"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "ffuw30dbcm2v4d"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "STATUSALT",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_ALT__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"53317\", \"53318\"]}, \"auth\": \"__ZABBIX_TOKEN_ALT__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "result.0.lastvalue",
+              "text": "m1",
+              "type": "number"
+            },
+            {
+              "selector": "result.1.lastvalue",
+              "text": "m2",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "\"385360\"",
+              "text": "edge_id"
+            },
+            {
+              "selector": "((m1 == 1) && (m2 == 1)) ? \"green\" : (((m1 == 1) || (m2 == 1)) ? \"orange\" : \"red\")",
+              "text": "color"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "LAG1",
+          "root_selector": "",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"385358\", \"385359\"], \"sortfield\": \"itemid\"}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "result.0.lastvalue",
+              "text": "m1",
+              "type": "number"
+            },
+            {
+              "selector": "result.1.lastvalue",
+              "text": "m2",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "\"316134\"",
+              "text": "edge_id"
+            },
+            {
+              "selector": "((m1 == 1) && (m2 == 1)) ? \"green\" : (((m1 == 1) || (m2 == 1)) ? \"orange\" : \"red\")",
+              "text": "color"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "LAG2",
+          "root_selector": "",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"316132\", \"316133\"], \"sortfield\": \"itemid\"}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "itemid",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "bw_in",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "(itemid == \"314627\") ? \"314779\" : ((itemid == \"314629\") ? \"314781\" : ((itemid == \"314895\") ? \"315047\" : ((itemid == \"315707\") ? \"315859\" : ((itemid == \"315706\") ? \"315858\" : ((itemid == \"315411\") ? \"315579\" : ((itemid == \"316455\") ? \"316599\" : ((itemid == \"317002\") ? \"317162\" : ((itemid == \"316708\") ? \"316876\" : ((itemid == \"318066\") ? \"318242\" : ((itemid == \"352508\") ? \"352516\" : ((itemid == \"318376\") ? \"318536\" : ((itemid == \"353871\") ? \"353879\" : ((itemid == \"170757\") ? \"170829\" : ((itemid == \"197690\") ? \"197698\" : ((itemid == \"368222\") ? \"368602\" : ((itemid == \"372407\") ? \"372912\" : ((itemid == \"368217\") ? \"368597\" : ((itemid == \"368216\") ? \"368596\" : ((itemid == \"357568\") ? \"357698\" : ((itemid == \"372405\") ? \"372910\" : ((itemid == \"372364\") ? \"372869\" : ((itemid == \"381584\") ? \"396348\" : ((itemid == \"372363\") ? \"372868\" : ((itemid == \"385336\") ? \"385360\" : ((itemid == \"315974\") ? \"316134\" : ((itemid == \"368225\") ? \"368605\" : ((itemid == \"373210\") ? \"373530\" : ((itemid == \"373211\") ? \"373531\" : ((itemid == \"155460\") ? \"155770\" : ((itemid == \"167125\") ? \"167245\" : (\"unknown\")))))))))))))))))))))))))))))))",
+              "text": "edge_id"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "BWINMAIN",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"314627\", \"314629\", \"314895\", \"315707\", \"315706\", \"315411\", \"316455\", \"317002\", \"316708\", \"318066\", \"352508\", \"318376\", \"353871\", \"170757\", \"197690\", \"368222\", \"372407\", \"368217\", \"368216\", \"357568\", \"372405\", \"372364\", \"381584\", \"372363\", \"385336\", \"315974\", \"368225\", \"373210\", \"373211\", \"155460\", \"167125\"]}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "itemid",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "bw_in",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "(itemid == \"53173\") ? \"53317\" : ((itemid == \"53174\") ? \"53318\" : (\"unknown\"))",
+              "text": "edge_id"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "ffuw30dbcm2v4d"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "BWINALT",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_ALT__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"53173\", \"53174\"]}, \"auth\": \"__ZABBIX_TOKEN_ALT__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "itemid",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "bw_out",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "(itemid == \"314646\") ? \"314779\" : ((itemid == \"314648\") ? \"314781\" : ((itemid == \"314914\") ? \"315047\" : ((itemid == \"315726\") ? \"315859\" : ((itemid == \"315725\") ? \"315858\" : ((itemid == \"315432\") ? \"315579\" : ((itemid == \"316473\") ? \"316599\" : ((itemid == \"317022\") ? \"317162\" : ((itemid == \"316729\") ? \"316876\" : ((itemid == \"318088\") ? \"318242\" : ((itemid == \"352509\") ? \"352516\" : ((itemid == \"318396\") ? \"318536\" : ((itemid == \"353872\") ? \"353879\" : ((itemid == \"170766\") ? \"170829\" : ((itemid == \"197691\") ? \"197698\" : ((itemid == \"368450\") ? \"368602\" : ((itemid == \"372710\") ? \"372912\" : ((itemid == \"368445\") ? \"368597\" : ((itemid == \"368444\") ? \"368596\" : ((itemid == \"357646\") ? \"357698\" : ((itemid == \"372708\") ? \"372910\" : ((itemid == \"372667\") ? \"372869\" : ((itemid == \"381586\") ? \"396348\" : ((itemid == \"372666\") ? \"372868\" : ((itemid == \"385339\") ? \"385360\" : ((itemid == \"315994\") ? \"316134\" : ((itemid == \"368453\") ? \"368605\" : ((itemid == \"373402\") ? \"373530\" : ((itemid == \"373403\") ? \"373531\" : ((itemid == \"155646\") ? \"155770\" : ((itemid == \"167197\") ? \"167245\" : (\"unknown\")))))))))))))))))))))))))))))))",
+              "text": "edge_id"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "BWOUTMAIN",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"314646\", \"314648\", \"314914\", \"315726\", \"315725\", \"315432\", \"316473\", \"317022\", \"316729\", \"318088\", \"352509\", \"318396\", \"353872\", \"170766\", \"197691\", \"368450\", \"372710\", \"368445\", \"368444\", \"357646\", \"372708\", \"372667\", \"381586\", \"372666\", \"385339\", \"315994\", \"368453\", \"373402\", \"373403\", \"155646\", \"167197\"]}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "itemid",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "bw_out",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "(itemid == \"53191\") ? \"53317\" : ((itemid == \"53192\") ? \"53318\" : (\"unknown\"))",
+              "text": "edge_id"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "ffuw30dbcm2v4d"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "BWOUTALT",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_ALT__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"53191\", \"53192\"]}, \"auth\": \"__ZABBIX_TOKEN_ALT__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "itemid",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "bw_speed",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "(itemid == \"314665\") ? \"314779\" : ((itemid == \"314667\") ? \"314781\" : ((itemid == \"314933\") ? \"315047\" : ((itemid == \"315745\") ? \"315859\" : ((itemid == \"315744\") ? \"315858\" : ((itemid == \"315453\") ? \"315579\" : ((itemid == \"316491\") ? \"316599\" : ((itemid == \"317042\") ? \"317162\" : ((itemid == \"316750\") ? \"316876\" : ((itemid == \"318110\") ? \"318242\" : ((itemid == \"352510\") ? \"352516\" : ((itemid == \"318416\") ? \"318536\" : ((itemid == \"353873\") ? \"353879\" : ((itemid == \"170775\") ? \"170829\" : ((itemid == \"197692\") ? \"197698\" : ((itemid == \"368526\") ? \"368602\" : ((itemid == \"372811\") ? \"372912\" : ((itemid == \"368521\") ? \"368597\" : ((itemid == \"368520\") ? \"368596\" : ((itemid == \"357672\") ? \"357698\" : ((itemid == \"372809\") ? \"372910\" : ((itemid == \"372768\") ? \"372869\" : ((itemid == \"381588\") ? \"396348\" : ((itemid == \"372767\") ? \"372868\" : ((itemid == \"385342\") ? \"385360\" : ((itemid == \"316014\") ? \"316134\" : ((itemid == \"368529\") ? \"368605\" : ((itemid == \"373466\") ? \"373530\" : ((itemid == \"373467\") ? \"373531\" : ((itemid == \"155708\") ? \"155770\" : ((itemid == \"167221\") ? \"167245\" : (\"unknown\")))))))))))))))))))))))))))))))",
+              "text": "edge_id"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "BWSPEEDMAIN",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"314665\", \"314667\", \"314933\", \"315745\", \"315744\", \"315453\", \"316491\", \"317042\", \"316750\", \"318110\", \"352510\", \"318416\", \"353873\", \"170775\", \"197692\", \"368526\", \"372811\", \"368521\", \"368520\", \"357672\", \"372809\", \"372768\", \"381588\", \"372767\", \"385342\", \"316014\", \"368529\", \"373466\", \"373467\", \"155708\", \"167221\"]}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "itemid",
+              "text": "itemid",
+              "type": "string"
+            },
+            {
+              "selector": "lastvalue",
+              "text": "bw_speed",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "(itemid == \"53209\") ? \"53317\" : ((itemid == \"53210\") ? \"53318\" : (\"unknown\"))",
+              "text": "edge_id"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "ffuw30dbcm2v4d"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "BWSPEEDALT",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_ALT__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"item.get\", \"params\": {\"output\": [\"itemid\", \"lastvalue\"], \"itemids\": [\"53209\", \"53210\"]}, \"auth\": \"__ZABBIX_TOKEN_ALT__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "edge_id",
+              "text": "edge_id",
+              "type": "string"
+            },
+            {
+              "selector": "id",
+              "text": "id",
+              "type": "string"
+            },
+            {
+              "selector": "source",
+              "text": "source",
+              "type": "string"
+            },
+            {
+              "selector": "target",
+              "text": "target",
+              "type": "string"
+            },
+            {
+              "selector": "label",
+              "text": "label",
+              "type": "string"
+            }
+          ],
+          "data": "edge_id,id,source,target,label\n314779,link01,OLT02,OLT06,OLT02-OLT06\n314781,link02,OLT02,OLT04,OLT02-OLT04\n315047,link03,OLT03,OLT02,OLT03-OLT02\n315859,link04,OLT05,OLT06,OLT05-OLT06\n315858,link05,OLT05,OLT08,OLT05-OLT08\n315579,link06,OLT06,SWA01,OLT06-SWA01\n316599,link07,OLT08,OLT18,OLT08-OLT18\n317162,link08,OLT09,SWA01,OLT09-SWA01\n316876,link09,OLT10,SWA01,OLT10-SWA01\n318242,link10,OLT11,SWA01,OLT11-SWA01\n352516,link11,OLT12,SWA01,OLT12-SWA01\n318536,link12,OLT13,OLT14,OLT13-OLT14\n353879,link13,OLT13,OLT24,OLT13-OLT24\n170829,link14,OLT16,SWA01,OLT16-SWA01\n197698,link15,OLT17,SWA03,OLT17-SWA03\n368602,link16,SWA01,SWA02,SWA01-SWA02 (GrupoFibra)\n372912,link17,SWA01,SWA03,SWA01-SWA03\n368597,link18,SWA01,NHPARCERIALP,OneTelecom Nazario Deferrari\n368596,link19,SWA01,NHPARCERIALP,BR Deferrari\n357698,link20,OLT22,OLT21,Lindoia-Itu\n372910,link21,SWA03,SWA02,SWA03-SWA02 (LP Connect)\n53317,link22,OLT01,OLT02,OLT01-OLT02\n53318,link23,OLT01,OLT28,OLT01-OLT28\n372869,link24,SWA03,OLT25,SWA03-OLT25\n396348,link25,OLT26,OLT22,OLT26-OLT22\n372868,link26,SWA03,OLT21,SWA03-OLT21 (Porta18)\n385360,link27,OLT04,SWA01,OLT04-SWA01 (LAG)\n316134,link28,OLT12,OLT13,OLT12-OLT13 (LAG)\n368605,link29,SWA01,CR110,SWA01-CR110 (LAG 40G)\n373530,link30,OLT20,SWA02,OLT20-SWA02 (Parks 8PON)\n373531,link31,OLT19,SWA02,OLT19-SWA02 (Parks 4PON)\n155770,link32,CR110,SWC01,CR110-SWC01 (LAG 40G)\n167245,link33,SWC01,BR10,SWC01-BR10 (LAG 40G)",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "besfqhdzq5xq8c"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "EDGEMETA",
+          "source": "inline",
+          "type": "csv"
+        }
+      ],
+      "title": "Banda por Enlace — Download / Upload",
+      "transformations": [
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^(STATUSMAIN|STATUSALT|LAG[0-9]+)$/"
+          },
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "BWINMAIN|BWINALT"
+          },
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "BWOUTMAIN|BWOUTALT"
+          },
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "BWSPEEDMAIN|BWSPEEDALT"
+          },
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^(merge-.*|EDGEMETA)$/"
+          },
+          "id": "joinByField",
+          "options": {
+            "byField": "edge_id",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "itemid 1": true,
+              "itemid 2": true,
+              "itemid 3": true,
+              "linkstatus": true,
+              "m1": true,
+              "m2": true
+            },
+            "renameByName": {
+              "color merge": "color",
+              "id EDGEMETA": "id",
+              "label EDGEMETA": "label",
+              "source EDGEMETA": "source",
+              "target EDGEMETA": "target"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "bw_max",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "bw_in",
+                "bw_out"
+              ],
+              "reducer": "max"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "utilization",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "bw_max"
+                }
+              },
+              "operator": "/",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "bw_speed"
+                }
+              }
+            },
+            "mode": "binary",
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "util_scaled",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "utilization"
+                }
+              },
+              "operator": "*",
+              "right": {
+                "fixed": "24"
+              }
+            },
+            "mode": "binary",
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "thickness",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "util_scaled"
+                }
+              },
+              "operator": "+",
+              "right": {
+                "fixed": "1.5"
+              }
+            },
+            "mode": "binary",
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "mainstat",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "bw_max"
+                }
+              },
+              "operator": "/",
+              "right": {
+                "fixed": "1000000"
+              }
+            },
+            "mode": "binary",
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "edge_id": true,
+              "id": true,
+              "m1": true,
+              "m2": true,
+              "mainstat": true,
+              "source": true,
+              "target": true,
+              "thickness": true,
+              "util_scaled": true
+            },
+            "indexByName": {
+              "bw_in": 1,
+              "bw_max": 3,
+              "bw_out": 2,
+              "bw_speed": 5,
+              "color": 6,
+              "label": 0,
+              "utilization": 4
+            },
+            "renameByName": {
+              "bw_in": "Download",
+              "bw_max": "Pico (maior)",
+              "bw_out": "Upload",
+              "bw_speed": "Capacidade",
+              "color": "Status",
+              "label": "Enlace",
+              "utilization": "Uso"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfuvt469z2rr4e"
+      },
+      "description": "Equipamento inacessivel (ICMP) | Enlace do mapa down | Sessao BGP caida | Sinal optico critico (Low Rx/Tx). Nao inclui ONU, atenuacao optica leve nem interfaces fora do mapa.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Severidade"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "3": {
+                        "color": "orange",
+                        "index": 0,
+                        "text": "Média"
+                      },
+                      "4": {
+                        "color": "red",
+                        "index": 1,
+                        "text": "Alta"
+                      },
+                      "5": {
+                        "color": "dark-red",
+                        "index": 2,
+                        "text": "Crítica"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 95
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tipo"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "BGP": {
+                        "color": "purple",
+                        "index": 2
+                      },
+                      "Enlace": {
+                        "color": "orange",
+                        "index": 1
+                      },
+                      "Equipamento": {
+                        "color": "red",
+                        "index": 0
+                      },
+                      "Óptico": {
+                        "color": "yellow",
+                        "index": 3
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Equipamento"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Desde"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsLocal"
+              },
+              {
+                "id": "custom.width",
+                "value": 155
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 11,
+        "x": 13,
+        "y": 19
+      },
+      "id": 22,
+      "options": {
+        "footer": {
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Severidade"
+          }
+        ]
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "hosts.0.name",
+              "text": "Equipamento",
+              "type": "string"
+            },
+            {
+              "selector": "description",
+              "text": "Alerta",
+              "type": "string"
+            },
+            {
+              "selector": "lastchange",
+              "text": "Desde",
+              "type": "timestamp_epoch_s"
+            },
+            {
+              "selector": "priority",
+              "text": "Severidade",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "\"Equipamento\"",
+              "text": "Tipo"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "ICMP",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"trigger.get\", \"params\": {\"output\": [\"triggerid\", \"description\", \"priority\", \"lastchange\"], \"filter\": {\"value\": 1}, \"monitored\": true, \"skipDependent\": true, \"selectHosts\": [\"name\"], \"sortfield\": \"lastchange\", \"sortorder\": \"DESC\", \"hostids\": [\"10544\", \"10545\", \"10546\", \"10547\", \"10548\", \"10549\", \"10550\", \"10551\", \"10552\", \"10553\", \"10554\", \"10555\", \"10556\", \"10589\", \"10603\", \"10614\", \"10577\", \"10578\", \"10727\", \"10728\", \"10726\", \"10732\", \"10714\", \"10716\", \"10717\", \"10575\", \"10580\", \"10616\", \"10718\", \"10557\"], \"search\": {\"description\": \"ICMP\"}}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "hosts.0.name",
+              "text": "Equipamento",
+              "type": "string"
+            },
+            {
+              "selector": "description",
+              "text": "Alerta",
+              "type": "string"
+            },
+            {
+              "selector": "lastchange",
+              "text": "Desde",
+              "type": "timestamp_epoch_s"
+            },
+            {
+              "selector": "priority",
+              "text": "Severidade",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "\"Enlace\"",
+              "text": "Tipo"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "LINKDOWN",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"trigger.get\", \"params\": {\"output\": [\"triggerid\", \"description\", \"priority\", \"lastchange\"], \"filter\": {\"value\": 1}, \"monitored\": true, \"skipDependent\": true, \"selectHosts\": [\"name\"], \"sortfield\": \"lastchange\", \"sortorder\": \"DESC\", \"itemids\": [\"155770\", \"167245\", \"170829\", \"197698\", \"314779\", \"314781\", \"315047\", \"315579\", \"315858\", \"315859\", \"316132\", \"316133\", \"316134\", \"316599\", \"316876\", \"317162\", \"318242\", \"318536\", \"352516\", \"353879\", \"357698\", \"368596\", \"368597\", \"368602\", \"368605\", \"372868\", \"372869\", \"372910\", \"372912\", \"373530\", \"373531\", \"385358\", \"385359\", \"385360\", \"396348\", \"53317\", \"53318\"], \"search\": {\"description\": \"Link down\"}}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "hosts.0.name",
+              "text": "Equipamento",
+              "type": "string"
+            },
+            {
+              "selector": "description",
+              "text": "Alerta",
+              "type": "string"
+            },
+            {
+              "selector": "lastchange",
+              "text": "Desde",
+              "type": "timestamp_epoch_s"
+            },
+            {
+              "selector": "priority",
+              "text": "Severidade",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "\"BGP\"",
+              "text": "Tipo"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "BGP",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"trigger.get\", \"params\": {\"output\": [\"triggerid\", \"description\", \"priority\", \"lastchange\"], \"filter\": {\"value\": 1}, \"monitored\": true, \"skipDependent\": true, \"selectHosts\": [\"name\"], \"sortfield\": \"lastchange\", \"sortorder\": \"DESC\", \"hostids\": [\"10544\", \"10545\", \"10546\", \"10547\", \"10548\", \"10549\", \"10550\", \"10551\", \"10552\", \"10553\", \"10554\", \"10555\", \"10556\", \"10589\", \"10603\", \"10614\", \"10577\", \"10578\", \"10727\", \"10728\", \"10726\", \"10732\", \"10714\", \"10716\", \"10717\", \"10575\", \"10580\", \"10616\", \"10718\", \"10557\"], \"search\": {\"description\": \"Peer\"}}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "hosts.0.name",
+              "text": "Equipamento",
+              "type": "string"
+            },
+            {
+              "selector": "description",
+              "text": "Alerta",
+              "type": "string"
+            },
+            {
+              "selector": "lastchange",
+              "text": "Desde",
+              "type": "timestamp_epoch_s"
+            },
+            {
+              "selector": "priority",
+              "text": "Severidade",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "\"Óptico\"",
+              "text": "Tipo"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "OPTRX",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"trigger.get\", \"params\": {\"output\": [\"triggerid\", \"description\", \"priority\", \"lastchange\"], \"filter\": {\"value\": 1}, \"monitored\": true, \"skipDependent\": true, \"selectHosts\": [\"name\"], \"sortfield\": \"lastchange\", \"sortorder\": \"DESC\", \"hostids\": [\"10544\", \"10545\", \"10546\", \"10547\", \"10548\", \"10549\", \"10550\", \"10551\", \"10552\", \"10553\", \"10554\", \"10555\", \"10556\", \"10589\", \"10603\", \"10614\", \"10577\", \"10578\", \"10727\", \"10728\", \"10726\", \"10732\", \"10714\", \"10716\", \"10717\", \"10575\", \"10580\", \"10616\", \"10718\", \"10557\"], \"search\": {\"description\": \"Low Rx Signal\"}}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "hosts.0.name",
+              "text": "Equipamento",
+              "type": "string"
+            },
+            {
+              "selector": "description",
+              "text": "Alerta",
+              "type": "string"
+            },
+            {
+              "selector": "lastchange",
+              "text": "Desde",
+              "type": "timestamp_epoch_s"
+            },
+            {
+              "selector": "priority",
+              "text": "Severidade",
+              "type": "number"
+            }
+          ],
+          "computed_columns": [
+            {
+              "selector": "\"Óptico\"",
+              "text": "Tipo"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cfuvt469z2rr4e"
+          },
+          "format": "table",
+          "parser": "backend",
+          "refId": "OPTTX",
+          "root_selector": "result",
+          "source": "url",
+          "type": "json",
+          "url": "__ZABBIX_URL_MAIN__",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"trigger.get\", \"params\": {\"output\": [\"triggerid\", \"description\", \"priority\", \"lastchange\"], \"filter\": {\"value\": 1}, \"monitored\": true, \"skipDependent\": true, \"selectHosts\": [\"name\"], \"sortfield\": \"lastchange\", \"sortorder\": \"DESC\", \"hostids\": [\"10544\", \"10545\", \"10546\", \"10547\", \"10548\", \"10549\", \"10550\", \"10551\", \"10552\", \"10553\", \"10554\", \"10555\", \"10556\", \"10589\", \"10603\", \"10614\", \"10577\", \"10578\", \"10727\", \"10728\", \"10726\", \"10732\", \"10714\", \"10716\", \"10717\", \"10575\", \"10580\", \"10616\", \"10718\", \"10557\"], \"search\": {\"description\": \"Low Tx Signal\"}}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "🔴 Alertas Críticos da Rede",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "Alerta": 2,
+              "Desde": 4,
+              "Equipamento": 1,
+              "Severidade": 3,
+              "Tipo": 0
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "1m",
+  "schemaVersion": 42,
+  "tags": [
+    "flex",
+    "noc",
+    "rede",
+    "visao-geral"
+  ],
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h"
+    ]
+  },
+  "timezone": "browser",
+  "title": "NOC — Visão Geral da Rede",
+  "uid": "78de0908-843d-4ea1-8990-d3a4f209bd67",
+  "version": 0
+}
