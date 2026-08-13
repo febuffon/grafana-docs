@@ -612,7 +612,7 @@
             {
               "selector": "mainstat",
               "text": "mainstat",
-              "type": "string"
+              "type": "number"
             },
             {
               "selector": "detail__tipo",
@@ -788,6 +788,10 @@
           }
         },
         {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^joinByField.*$/"
+          },
           "id": "organize",
           "options": {
             "excludeByName": {
@@ -808,6 +812,10 @@
           }
         },
         {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^joinByField.*$/"
+          },
           "id": "calculateField",
           "options": {
             "alias": "bw_max",
@@ -823,6 +831,10 @@
           }
         },
         {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^joinByField.*$/"
+          },
           "id": "calculateField",
           "options": {
             "alias": "utilization",
@@ -846,6 +858,10 @@
           }
         },
         {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^joinByField.*$/"
+          },
           "id": "calculateField",
           "options": {
             "alias": "util_scaled",
@@ -866,6 +882,10 @@
           }
         },
         {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^joinByField.*$/"
+          },
           "id": "calculateField",
           "options": {
             "alias": "thickness",
@@ -886,6 +906,10 @@
           }
         },
         {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^joinByField.*$/"
+          },
           "id": "calculateField",
           "options": {
             "alias": "mainstat",
@@ -1014,6 +1038,10 @@
           }
         },
         {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^joinByField.*$/"
+          },
           "id": "calculateField",
           "options": {
             "alias": "arc__crit",
@@ -1034,6 +1062,10 @@
           }
         },
         {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^joinByField.*$/"
+          },
           "id": "organize",
           "options": {
             "excludeByName": {
