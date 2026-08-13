@@ -111,7 +111,7 @@
         "type": "mixed",
         "uid": "-- Mixed --"
       },
-      "description": "Anel: fatia menor = tipo (branco OLT / azul Switch / roxo Core-Borda); restante = status ao vivo do Zabbix (verde OK, amarelo alerta Media, vermelho alerta Alta/Critica). Alertas Warning/Info sao ignorados. Enlaces: espessura = trafego (hover mostra a banda); verde OK, laranja LAG degradado, vermelho down.",
+      "description": "Anel: fatia menor = tipo (branco OLT / azul Switch / roxo Core-Borda); restante = status ao vivo do Zabbix, considerando apenas alarmes abertos nos ultimos 7 dias (verde OK, amarelo Media, vermelho Alta/Critica). Alarmes cronicos mais antigos nao coloram o no, mas seguem listados na tabela de alertas. Warning/Info sao sempre ignorados. Enlaces: espessura = trafego (hover mostra a banda); verde OK, laranja LAG degradado, vermelho down.",
       "fieldConfig": {
         "overrides": [
           {
@@ -692,7 +692,7 @@
           "url_options": {
             "body_content_type": "application/json",
             "body_type": "raw",
-            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"trigger.get\", \"params\": {\"output\": [\"triggerid\", \"priority\"], \"hostids\": [\"10544\", \"10545\", \"10546\", \"10547\", \"10548\", \"10549\", \"10550\", \"10551\", \"10552\", \"10553\", \"10554\", \"10555\", \"10556\", \"10589\", \"10603\", \"10614\", \"10577\", \"10578\", \"10727\", \"10728\", \"10726\", \"10732\", \"10714\", \"10716\", \"10717\", \"10575\", \"10580\", \"10616\", \"10718\", \"10557\"], \"filter\": {\"value\": 1}, \"min_severity\": 3, \"monitored\": true, \"skipDependent\": true, \"selectHosts\": [\"hostid\"]}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"trigger.get\", \"params\": {\"output\": [\"triggerid\", \"priority\"], \"hostids\": [\"10544\", \"10545\", \"10546\", \"10547\", \"10548\", \"10549\", \"10550\", \"10551\", \"10552\", \"10553\", \"10554\", \"10555\", \"10556\", \"10589\", \"10603\", \"10614\", \"10577\", \"10578\", \"10727\", \"10728\", \"10726\", \"10732\", \"10714\", \"10716\", \"10717\", \"10575\", \"10580\", \"10616\", \"10718\", \"10557\"], \"filter\": {\"value\": 1}, \"min_severity\": 3, \"monitored\": true, \"skipDependent\": true, \"selectHosts\": [\"hostid\"], \"lastChangeSince\": \"${__from:date:seconds}\"}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
             "method": "POST"
           }
         },
@@ -736,11 +736,12 @@
           "url_options": {
             "body_content_type": "application/json",
             "body_type": "raw",
-            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"trigger.get\", \"params\": {\"output\": [\"triggerid\", \"priority\"], \"hostids\": [\"10544\", \"10545\", \"10546\", \"10547\", \"10548\", \"10549\", \"10550\", \"10551\", \"10552\", \"10553\", \"10554\", \"10555\", \"10556\", \"10589\", \"10603\", \"10614\", \"10577\", \"10578\", \"10727\", \"10728\", \"10726\", \"10732\", \"10714\", \"10716\", \"10717\", \"10575\", \"10580\", \"10616\", \"10718\", \"10557\"], \"filter\": {\"value\": 1}, \"min_severity\": 4, \"monitored\": true, \"skipDependent\": true, \"selectHosts\": [\"hostid\"]}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
+            "data": "{\"jsonrpc\": \"2.0\", \"method\": \"trigger.get\", \"params\": {\"output\": [\"triggerid\", \"priority\"], \"hostids\": [\"10544\", \"10545\", \"10546\", \"10547\", \"10548\", \"10549\", \"10550\", \"10551\", \"10552\", \"10553\", \"10554\", \"10555\", \"10556\", \"10589\", \"10603\", \"10614\", \"10577\", \"10578\", \"10727\", \"10728\", \"10726\", \"10732\", \"10714\", \"10716\", \"10717\", \"10575\", \"10580\", \"10616\", \"10718\", \"10557\"], \"filter\": {\"value\": 1}, \"min_severity\": 4, \"monitored\": true, \"skipDependent\": true, \"selectHosts\": [\"hostid\"], \"lastChangeSince\": \"${__from:date:seconds}\"}, \"auth\": \"__ZABBIX_TOKEN_MAIN__\", \"id\": 1}",
             "method": "POST"
           }
         }
       ],
+      "timeFrom": "7d",
       "title": "Topologia da Rede — Enlaces PtP (espessura = uso de banda)",
       "transformations": [
         {

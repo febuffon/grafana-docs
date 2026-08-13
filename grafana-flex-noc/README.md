@@ -68,12 +68,18 @@ O anel de cada nó soma 1.0: **0.25 indica o tipo** de equipamento e **0.75 indi
 
 | Status | Cor dos 75% |
 |---|---|
-| Sem alerta ≥ Média | verde |
+| Sem alerta ≥ Média nos últimos 7 dias | verde |
 | Alerta severidade Média | amarelo |
 | Alerta severidade Alta/Crítica | vermelho |
 
 Alertas de severidade Warning/Info são **ignorados de propósito** — senão o mapa fica todo amarelo
 por alarme de ONU, que não é problema de rede.
+
+**Só alarme dos últimos 7 dias colore o nó.** Alarme crônico (óptica degradada há meses, sessão BGP
+desativada) deixava metade dos switches vermelhos permanentemente, e a cor perdia o sentido.
+Implementado com `"lastChangeSince": "${__from:date:seconds}"` nas queries de status do nó e
+`"timeFrom": "7d"` no painel do mapa, que sobrepõe o seletor de tempo do dashboard só ali. O alarme
+antigo continua na tabela de alertas, com a coluna "Desde" mostrando há quanto tempo está aberto.
 
 ### Detalhes de implementação
 
